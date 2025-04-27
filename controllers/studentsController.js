@@ -18,7 +18,7 @@ exports.createStudent = async (req, res) => {
 
         // Save the menu item to the database
         await student.save();
-        console.log(student)
+
         return res.status(201).json({ message: "Menu item created successfully" });
     } catch (error) {
         console.error("Error creating menu item:", error);
