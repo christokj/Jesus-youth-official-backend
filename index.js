@@ -3,9 +3,11 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const apiRouter = require("./routes");
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const app = express();
+
 
 const corsOptions = {
     origin: [process.env.CLIENT_DOMAIN],
@@ -18,6 +20,7 @@ app.use(cors(corsOptions));
 
 // Middlewares
 app.use(express.json());
+app.use(cookieParser());
 
 // Connect to MongoDB Database
 connectDB();
