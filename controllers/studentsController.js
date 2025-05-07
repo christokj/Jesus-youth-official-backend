@@ -4,7 +4,7 @@ exports.createStudent = async (req, res) => {
     try {
         const { name, age, unit, address, mobile, place, maritalStatus, dob, parish } = req.body;
 
-        console.log(name, age, unit, address, mobile, place, maritalStatus, dob, parish)
+        // console.log(name, age, unit, address, mobile, place, maritalStatus, dob, parish)
 
         // Validate the request
         if (!name || !age || !unit || !address || !mobile || !place || !maritalStatus || !dob || !parish) {
@@ -21,7 +21,7 @@ exports.createStudent = async (req, res) => {
 
         return res.status(201).json({ message: "Menu item created successfully" });
     } catch (error) {
-        console.error("Error creating menu item:", error);
+        // console.error("Error creating menu item:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };

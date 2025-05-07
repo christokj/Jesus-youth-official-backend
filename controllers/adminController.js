@@ -21,7 +21,7 @@ const adminLogin = async (req, res) => {
         const isProduction = process.env.NODE_ENV === "production";
 
         res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000, // 1 hour
+            maxAge: 3 * 60 * 60 * 1000, // 3 hour
             httpOnly: true,
             secure: isProduction,
             sameSite: isProduction ? "None" : "Lax",
@@ -29,7 +29,7 @@ const adminLogin = async (req, res) => {
 
         return res.status(200).json({ success: true, message: "Admin login successful", token });
     } catch (error) {
-        console.error("Admin login error:", error.message);
+        // console.error("Admin login error:", error.message);
         return res.status(500).json({ success: false, message: "Server error during login." });
     }
 };
@@ -39,7 +39,7 @@ const getAllStudents = async (req, res) => {
         const students = await StudentModel.find();
         return res.status(200).json(students);
     } catch (error) {
-        console.error("Error fetching students:", error.message);
+        // console.error("Error fetching students:", error.message);
         return res.status(500).json({ success: false, message: "Server error fetching students." });
     }
 };
@@ -60,7 +60,7 @@ const deleteStudent = async (req, res) => {
 
         return res.status(200).json({ success: true, message: "Student deleted successfully." });
     } catch (error) {
-        console.error("Error deleting student:", error.message);
+        // console.error("Error deleting student:", error.message);
         return res.status(500).json({ success: false, message: "Server error deleting student." });
     }
 };
