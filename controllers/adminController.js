@@ -46,13 +46,13 @@ const getAllStudents = async (req, res) => {
 
 const deleteStudent = async (req, res) => {
     try {
-        const { name, place, dob } = req.body;
 
-        if (!name || !place || !dob) {
-            return res.status(400).json({ success: false, message: "All fields are required." });
+        if (!req.params.id) {
+            return res.status(400).json({ success: false, message: "Id is required." });
         }
 
-        const deleted = await StudentModel.findOneAndDelete({ name, place, dob });
+        const deleted = await StudentModel.findByIdAndDelete(req.params.id);
+        // console.log(db.students.findOne({ _id: ObjectId(req.params.id) }))
 
         if (!deleted) {
             return res.status(404).json({ success: false, message: "Student not found." });
@@ -65,8 +65,30 @@ const deleteStudent = async (req, res) => {
     }
 };
 
+const updateStudent = async (req, res) => {
+    try {
+        const { id, paid } = req.body;
+
+        if (!id || paid === null) {
+            return res.status(400).json({ success: false, message: "All fields are required." });
+        }
+
+        const status = await StudentModel.findByIdAndUpdate(id, { paid });
+
+        if (!status) {
+            return res.status(404).json({ success: false, message: "Student not found." });
+        }
+
+        return res.status(200).json({ success: true, message: "Data updated successfully." });
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error updating student." });
+    }
+};
+
 module.exports = {
     getAllStudents,
     adminLogin,
     deleteStudent,
+    updateStudent,
 };

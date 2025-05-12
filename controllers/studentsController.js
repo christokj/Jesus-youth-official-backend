@@ -2,18 +2,18 @@ const StudentModel = require("../models/StudentModel");
 
 exports.createStudent = async (req, res) => {
     try {
-        const { name, age, unit, address, mobile, place, maritalStatus, dob, parish } = req.body;
+        const { name, age, unit, address, mobile, place, maritalStatus, dob, parish, gender } = req.body;
 
         // console.log(name, age, unit, address, mobile, place, maritalStatus, dob, parish)
 
         // Validate the request
-        if (!name || !age || !unit || !address || !mobile || !place || !maritalStatus || !dob || !parish) {
+        if (!name || !age || !unit || !address || !mobile || !place || !maritalStatus || !dob || !gender || !parish) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
         // Create a new menu item
         const student = new StudentModel({
-            name, age, unit, address, mobile, place, maritalStatus, dob, parish
+            name, age, unit, address, mobile, place, maritalStatus, dob, parish, gender
         });
 
         // Save the menu item to the database

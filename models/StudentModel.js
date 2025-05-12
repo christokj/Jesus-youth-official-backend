@@ -9,7 +9,9 @@ const StudentModelSchema = new mongoose.Schema({
     place: String,
     maritalStatus: String,
     dob: String,
-    parish: String
+    parish: String,
+    gender: String,
+    paid: Boolean
 }, {
     timestamps: true // This adds createdAt and updatedAt fields automatically
 });
