@@ -86,9 +86,31 @@ const updateStudent = async (req, res) => {
     }
 };
 
+const updateGender = async (req, res) => {
+    try {
+        const { id, gender } = req.body;
+
+        if (!id || !gender) {
+            return res.status(400).json({ success: false, message: "All fields are required." });
+        }
+
+        const status = await StudentModel.findByIdAndUpdate(id, { gender });
+
+        if (!status) {
+            return res.status(404).json({ success: false, message: "Student not found." });
+        }
+
+        return res.status(200).json({ success: true, message: "Data updated successfully." });
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error updating student." });
+    }
+};
+
 module.exports = {
     getAllStudents,
     adminLogin,
     deleteStudent,
     updateStudent,
+    updateGender
 };
