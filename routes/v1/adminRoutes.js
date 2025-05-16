@@ -9,6 +9,7 @@ router.post("/login", asyncHandler(adminLogin));
 router.post("/update-paid", asyncHandler(authAdmin), asyncHandler(updateStudent));
 router.post("/update-gender", asyncHandler(authAdmin), asyncHandler(updateGender));
 router.get("/get-data", asyncHandler(authAdmin), asyncHandler(getAllStudents));
+
 // router.delete('/delete-student/:id', asyncHandler(authAdmin), asyncHandler(deleteStudent));
 
 module.exports = router;
