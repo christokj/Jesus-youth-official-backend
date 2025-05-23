@@ -107,10 +107,26 @@ const updateGender = async (req, res) => {
     }
 };
 
+const updateVisited = async (req, res) => {
+    const { id, visited } = req.body;
+    console.log(visited, id)
+    if (!id || visited === null) {
+        return res.status(400).json({ success: false, message: "All fields are required." });
+    }
+    try {
+        await StudentModel.findByIdAndUpdate(id, { visited });
+        res.status(200).send({ success: true });
+    } catch (error) {
+        res.status(500).send({ success: false, message: 'Failed to update visited status' });
+    }
+};
+
+
 module.exports = {
     getAllStudents,
     adminLogin,
     deleteStudent,
     updateStudent,
-    updateGender
+    updateGender,
+    updateVisited
 };
