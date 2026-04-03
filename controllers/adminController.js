@@ -1,6 +1,34 @@
 const StudentModel = require("../models/StudentModel");
+const AdminModel = require("../models/AdminModel");
 const argon2 = require('argon2');
 const { generateToken } = require("../utils/generateToken");
+
+const adminSignup = async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({ success: false, message: "All fields are required." });
+        }
+
+        const existingAdmin = await AdminModel.findOne({ $or: [{ username }, { email }] });
+        if (existingAdmin) {
+            return res.status(409).json({ success: false, message: "Username or email already exists." });
+        }
+
+        const hashedPassword = await argon2.hash(password);
+
+        const newAdmin = await AdminModel.create({
+            username,
+            email,
+            password: hashedPassword
+        });
+
+        return res.status(201).json({ success: true, message: "Admin created successfully." });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error during registration." });
+    }
+};
 
 const adminLogin = async (req, res) => {
     try {
@@ -10,7 +38,12 @@ const adminLogin = async (req, res) => {
             return res.status(400).json({ success: false, message: "All fields are required." });
         }
 
-        const isPasswordValid = await argon2.verify(process.env.ADMIN_PASSWORD, password);
+        const admin = await AdminModel.findOne({ username });
+        if (!admin) {
+            return res.status(401).json({ success: false, message: "Invalid credentials." });
+        }
+
+        const isPasswordValid = await argon2.verify(admin.password, password);
 
         if (!isPasswordValid) {
             return res.status(401).json({ success: false, message: "Invalid credentials." });
@@ -121,12 +154,41 @@ const updateVisited = async (req, res) => {
     }
 };
 
+const getAllAdmins = async (req, res) => {
+    try {
+        const admins = await AdminModel.find().select('-password');
+        return res.status(200).json(admins);
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error fetching admins." });
+    }
+};
+
+const deleteAdmin = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            return res.status(400).json({ success: false, message: "Id is required." });
+        }
+
+        const deleted = await AdminModel.findByIdAndDelete(req.params.id);
+
+        if (!deleted) {
+            return res.status(404).json({ success: false, message: "Admin not found." });
+        }
+
+        return res.status(200).json({ success: true, message: "Admin deleted successfully." });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error deleting admin." });
+    }
+};
 
 module.exports = {
     getAllStudents,
     adminLogin,
+    adminSignup,
     deleteStudent,
     updateStudent,
     updateGender,
-    updateVisited
+    updateVisited,
+    getAllAdmins,
+    deleteAdmin
 };
