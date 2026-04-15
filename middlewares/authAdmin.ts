@@ -3,10 +3,18 @@ import jwt from "jsonwebtoken";
 import { AdminRequest, TokenPayload } from "../types";
 
 export const authAdmin = (req: AdminRequest, res: Response, next: NextFunction) => {
-  const { token } = req.cookies as { token?: string };
+  const { token: cookieToken } = req.cookies as { token?: string };
+  const authorizationHeader = req.headers.authorization;
+  const customHeaderToken = req.headers["x-admin-token"];
+  const bearerToken =
+    typeof authorizationHeader === "string" && authorizationHeader.startsWith("Bearer ")
+      ? authorizationHeader.slice(7).trim()
+      : undefined;
+  const fallbackToken = typeof customHeaderToken === "string" ? customHeaderToken.trim() : undefined;
+  const token = cookieToken || bearerToken || fallbackToken;
 
   if (!token) {
-    return res.status(400).json({ success: false, message: "Admin not authenticated" });
+    return res.status(401).json({ success: false, message: "Admin not authenticated" });
   }
 
   const secret = process.env.JWT_SECRET_KEY;

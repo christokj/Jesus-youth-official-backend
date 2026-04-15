@@ -30,7 +30,7 @@ const corsOptions: CorsOptions = {
 
     callback(new Error("Not allowed by CORS"));
   },
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-admin-token"],
   credentials: true,
   optionsSuccessStatus: 200,
 };
