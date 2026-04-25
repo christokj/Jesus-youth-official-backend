@@ -17,6 +17,11 @@ const studentSchema = new mongoose.Schema(
     dob: String,
     parish: String,
     gender: String,
+    prayerRequest: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     paid: { type: Boolean, default: false },
     visited: { type: Boolean, default: false },
   },

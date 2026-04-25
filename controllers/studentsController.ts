@@ -7,7 +7,7 @@ const previousYearQuery = {
 
 export const createStudent = async (req: Request, res: Response) => {
   try {
-    const { name, age, unit, address, mobile, place, maritalStatus, dob, parish, gender } = req.body;
+    const { name, age, unit, address, mobile, place, maritalStatus, dob, parish, gender, prayerRequest } = req.body;
     const requestedYear = Number(req.body.programYear);
     const programYear = Number.isInteger(requestedYear) ? requestedYear : new Date().getFullYear();
 
@@ -31,6 +31,7 @@ export const createStudent = async (req: Request, res: Response) => {
       dob,
       parish,
       gender,
+      prayerRequest: typeof prayerRequest === "string" ? prayerRequest.trim() : "",
     });
 
     await student.save();

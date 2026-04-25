@@ -23,6 +23,7 @@ export interface StudentPayload {
   dob: string;
   parish: string;
   gender: string;
+  prayerRequest?: string;
   paid?: boolean;
   visited?: boolean;
 }
