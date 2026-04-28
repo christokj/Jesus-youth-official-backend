@@ -142,6 +142,10 @@ export const getAllAdmins = async (_req: Request, res: Response) => {
   }
 };
 
+export const validateAdminSession = async (_req: Request, res: Response) => {
+  return res.status(200).json({ success: true, message: "Admin session is valid." });
+};
+
 export const deleteAdmin = async (req: Request, res: Response) => {
   try {
     if (!req.params.id) {
